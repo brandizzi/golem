@@ -1,0 +1,56 @@
+How to use Golem? Just write a mockup with pure HTML:
+
+    >>> my_html = """<html>
+    ...     <head><title>I will think about a title some day</title></head>
+    ...     <body>
+    ...         <p>My wishlist</p>
+    ...         <ul class="wishlist">
+    ...             <li>Some wish here</li>
+    ...             <li>Some wish here</li>
+    ...         </ul>
+    ...         <p>You can buy this stuff at 
+    ...         <a id="shop" href="">this shop</a></p>
+    ...     </body>
+    ... </html>"""
+
+Now Python should do the rest! First create an Animator:
+
+
+    >>> import golem
+    >>> animator = golem.Animator(my_html)
+
+Then inform animator about the data to fill the mock-up. For example, to set a
+meaningful title, call the ``fill()`` method with a CSS selector for the 
+``<title>`` tag and the value to be put there:
+
+    >>> animator.fill('title', 'My wishlist')
+
+To set the items in the wishlist, give the method a selector to the ``<li>``
+elements but pass a list to it as a second parameter:
+
+    >>> animator.fill('.wishlist li', 
+    ...         ['A poney', 'candies', 'The Devil to Pay in the Backlands'])
+
+To set the ``href`` attribute from the ``<a>`` element, pass the value to be set
+as a named parameter:
+    
+    >>> animator.fill('a#shop', href='http://mymockshop.com')
+
+The ``result()`` method presents the filled template:
+
+    >>> print(animator.result())
+    <html>
+        <head><title>My wishlist</title></head>
+        <body>
+            <p>My wishlist</p>
+            <ul class="wishlist">
+                <li>A poney</li>
+                <li>candies</li>
+                <li>The Devil to Pay in the Backlands</li>
+                </ul>
+            <p>You can buy this stuff at 
+            <a id="shop" href="http://mymockshop.com">this shop</a></p>
+        </body>
+    </html>
+
+    
