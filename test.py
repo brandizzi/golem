@@ -30,6 +30,33 @@ class SimpleAnimationTestCase(unittest.TestCase):
         span = parsed_result.xpath('//span')[0]
         self.assertEquals(span.text, 'my lovely message')
 
+    def test_fill_list(self):
+        template = """
+            <html>
+                <head><title>Some title stuff</title></head>
+                <body>
+                    <p>This is my wishlist:</p>
+                    <ul class="wishlist">
+                         <li>One item</li>
+                         <li>Another item</li>
+                    </ul>
+                </body>
+            </html>
+        """
+
+        wishlist = ['A poney', 'The Devil to Pay in the Backlands']
+        
+        animator = Animator(template)
+        animator.fill('title', 'My wishlist')
+        animator.fill('.wishlist li', wishlist)
+        result = animator.result()
+
+        parsed_result = fromstring(result)
+        title = parsed_result.xpath('//title')[0]
+        self.assertEquals(title.text, 'My wishlist')
+        items = parsed_result.xpath('//li')
+        self.assertItemsEqual([item.text for item in items], wishlist)
+
 
 if __name__ == "__main__":
     unittest.main()
