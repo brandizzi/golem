@@ -24,4 +24,8 @@ class GolemSite(object):
         return animator.result()
     index.exposed = True
 
-cherrypy.quickstart(GolemSite())
+config = {'/': {}}
+application =  cherrypy.tree.mount(GolemSite(), '', config=config)
+
+if __name__ == "__main__":
+    cherrypy.quickstart(GolemSite())
