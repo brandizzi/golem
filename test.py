@@ -57,6 +57,25 @@ class SimpleAnimationTestCase(unittest.TestCase):
         items = parsed_result.xpath('//li')
         self.assertItemsEqual([item.text for item in items], wishlist)
 
+    def test_fill_href(self):
+        template = """
+            <html>
+                <head><title>Golem</title></head>
+                <body>
+                    <p>Golem can be download from <a href="">here</a>.</p>
+                </body>
+            </html>
+        """
+        download_url = 'https://bitbucket.org/brandizzi/golem/downloads'
+
+        animator = Animator(template)
+        animator.fill('a', href=download_url)
+        result = animator.result()
+
+        parsed_result = fromstring(result)
+        link = parsed_result.xpath('//a')[0]
+        self.assertEquals(link.get('href'), download_url) 
+
 
 if __name__ == "__main__":
     unittest.main()
