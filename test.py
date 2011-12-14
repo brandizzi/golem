@@ -119,7 +119,6 @@ class SimpleAnimationTestCase(unittest.TestCase):
         animator.fillSubelements('table#people', objects, fillers)
         result = animator.result()
         parsed_result = fromstring(result)
-        print tostring(parsed_result)
         name_tds = parsed_result.xpath('//td[@class="name"]')
         age_tds = parsed_result.xpath('//td[@class="age"]')
         nick_inputs = parsed_result.xpath('//input[@name="nick"]')
