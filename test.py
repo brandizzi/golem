@@ -1,9 +1,9 @@
 import cStringIO as StringIO
 
 import unittest2 as unittest
-from lxml.etree import fromstring
+from lxml.etree import fromstring, tostring
 
-from golem import Animator
+from golem import Animator, Filler
 
 class SimpleAnimationTestCase(unittest.TestCase):
 
@@ -75,6 +75,59 @@ class SimpleAnimationTestCase(unittest.TestCase):
         parsed_result = fromstring(result)
         link = parsed_result.xpath('//a')[0]
         self.assertEquals(link.get('href'), download_url) 
+
+    def test_fillers_with_objects(self):
+        template = """
+            <html>
+                <head><title>Golem</title></head>
+                <body>
+                    <table id="people">
+                        <tr><th>Name</th><th>Age</th><th>Nick</th></tr>
+                        <tr>
+                            <td class="name">Foo</td>
+                            <td class="age">1</td>
+                            <td><input name="nick" type="text" /></td>
+                        </tr>
+                        <tr>
+                            <td class="name">Bar</td>
+                            <td class="age">2</td>
+                            <td><input name="nick" type="text" /></td>
+                        </tr>
+                    </table>
+                </body>
+            </html>
+        """
+        download_url = 'https://bitbucket.org/brandizzi/golem/downloads'
+
+        name_filler = Filler('td.name', lambda obj: obj.name)
+        age_filler = Filler('td.age', lambda obj: obj.age)
+        nick_filler = Filler('input[name="nick"]', value=lambda obj: obj.nick)
+
+        class Person(object):
+            def __init__(self, name, age, nick):
+                self.name = name
+                self.age = age
+                self.nick = nick
+        objects = [
+            Person("John Smith", 42, 'Johny'),
+            Person("Linda Carlson", 32, 'Linda'),
+            Person("Ashley Johnson", 50, 'Ash')
+        ]
+        
+        animator = Animator(template)
+        fillers = [name_filler, age_filler, nick_filler]
+        animator.fillSubelements('table#people', objects, fillers)
+        result = animator.result()
+        parsed_result = fromstring(result)
+        print tostring(parsed_result)
+        name_tds = parsed_result.xpath('//td[@class="name"]')
+        age_tds = parsed_result.xpath('//td[@class="age"]')
+        nick_inputs = parsed_result.xpath('//input[@name="nick"]')
+        paired = zip(objects, name_tds, age_tds, nick_inputs)
+        for person, name_td, age_td, nick_input in paired:
+            self.assertEquals(name_td.text, person.name)
+            self.assertEquals(age_td.text, str(person.age))
+            self.assertEquals(nick_input.get('value'), person.nick) 
 
 
 if __name__ == "__main__":
