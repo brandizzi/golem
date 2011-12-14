@@ -10,5 +10,28 @@
         <code class="doctest" style="white-space: pre;">
             ... Here comes the example ...
         </code>
+        <h2>Comments</h2>
+        <ul id="comments">
+            <li>
+                <div class="author">
+                    <span class="name">Joe</span>
+                    (<a name="author_url" href=""></a>)
+                    in <span class="date">31/12/1984</span>
+                </div>
+                <div class="title">Some funky title</div>
+                <div class="content">Some funky content</div>
+            </li>
+        </ul>
+        <form action="/comment" method="post">
+            <label for="author">Name</label><br />
+            <input type="text" name="author" /><br />
+            <label for="author_url">URL</label><br />
+            <input type="text" name="author_url" /><br />
+            <label for="title">Title</label><br />
+            <input type="text" name="title" /><br />
+            <label for="content">Content</label><br />
+            <textarea rows="10" cols="50" name="content"> </textarea><br />
+            <input type="submit" value="Submit" /><br />
+        </form>
     </body>
 </html>
