@@ -1,7 +1,7 @@
 from distutils.core import setup
 
 setup(name='golem',
-      version='0.1.1dev',
+      version='0.1.1',
       description='Golem Unobtrusive Template',
       long_description="""
       Golem is an experimental, simple template engine for template animation
