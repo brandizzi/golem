@@ -14,4 +14,5 @@ setup(name='golem',
       url = 'http://bitbucket.org/brandizzi/golem',
       py_modules=['golem'],
       requires=['lxml (>=2.3)'],
+      data_files=['golem.txt'],
      )
