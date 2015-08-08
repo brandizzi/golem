@@ -1,6 +1,0 @@
-Golem is an experimental, simple template engine for template animation
-(or unobtrusive server scripting). Golem allows developers to gelerate
-HTML interface for data based simple HTML mockups. Golem templates
-has no new tempalte syntax, no special XML elements, just plain HTML.
-
-For more info about how to use Golem, see the file golem.txt
