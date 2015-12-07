@@ -5,7 +5,8 @@ from collections import defaultdict
 class Animator(object):
 
     def __init__(self, document, parser=ET):
-        self.document = parser.fromstring(document)
+        self.parser = parser
+        self.document = self.parser.fromstring(document)
         self.class_map = defaultdict(list)
         for element in self.document.iter():
             if 'class' in element.attrib:
@@ -15,3 +16,6 @@ class Animator(object):
 
     def find(self, class_=None):
         return self.class_map[class_]
+
+    def tostring(self):
+        return self.parser.tostring(self.document)
